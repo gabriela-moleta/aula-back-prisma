@@ -2,7 +2,7 @@ import PersonagemModel from "../models/personagemModel.js";
 
 class PersonagemController {
   // GET /api/personagens
-  async getAllPersonagens(req, res) {
+  async getAllPersonagem(req, res) {
     try {
       const personagens = await PersonagemModel.findAll();
       res.json(personagens);
@@ -13,139 +13,124 @@ class PersonagemController {
   }
 
   // GET /api/personagens/:id
-  async getAnimeById(req, res) {
+  async getPersonagemById(req, res) {
     try {
       const { id } = req.params;
 
-      const anime = await AnimeModel.findById(id);
+      const personagens = await PersonagemModel.findById(id);
 
-      if (!anime) {
-        return res.status(404).json({ error: "Anime não encontrado" });
+      if (!personagens) {
+        return res.status(404).json({ error: "Personagem não encontrado" });
       }
 
-      res.json(anime);
+      res.json(personagens);
     } catch (error) {
-      console.error("Erro ao buscar anime:", error);
-      res.status(500).json({ error: "Erro ao buscar anime" });
+      console.error("Erro ao buscar personagens:", error);
+      res.status(500).json({ error: "Erro ao buscar personagens" });
     }
   }
 
   // POST /api/personagens
-  async createAnime(req, res) {
+  async createPersonagem(req, res) {
     console.log("Requisição recebida:", req.body); // Log da requisição recebida
     
     try {
       // Validação básica
       const {
-        title,
+        name,
         description,
-        episodes,
-        releaseYear,
-        studio,
-        genres,
-        rating,
-        imageUrl,
+        age,
+        power,
+        anime
       } = req.body;
 
       
 
-      // Verifica se o título do anime foi fornecido
+      // Verifica se o título do personagens foi fornecido
 
       if (
-        !title ||
+        !name ||
         !description ||
-        !episodes ||
-        !releaseYear ||
-        !studio ||
-        !genres ||
-        !rating ||
-        !imageUrl
+        !age ||
+        !power ||
+        !anime 
       ) {
         return res
           .status(400)
           .json({ error: "Todos os campos são obrigatórios" });
       }
 
-      // Criar o novo anime
-      const newAnime = await AnimeModel.create(
-        title,
+      // Criar o novo personagens
+      const newPersonagem = await PersonagemModel.create(
+        name,
         description,
-        episodes,
-        releaseYear,
-        studio,
-        genres,
-        rating,
-        imageUrl
+        age,
+        power,
+        anime
       );
 
-      if (!newAnime) {
-        return res.status(400).json({ error: "Erro ao criar anime" });
+      if (!newPersonagem) {
+        return res.status(400).json({ error: "Erro ao criar personagens" });
       }
 
-      res.status(201).json(newAnime);
+      res.status(201).json(newPersonagem);
     } catch (error) {
-      console.error("Erro ao criar anime:", error);
-      res.status(500).json({ error: "Erro ao criar anime" });
+      console.error("Erro ao criar personagens:", error);
+      res.status(500).json({ error: "Erro ao criar personagens" });
     }
   }
 
   // PUT /api/personagens/:id
-  async updateAnime(req, res) {
+  async updatePersonagem(req, res) {
     try {
       const { id } = req.params;
       const {
-        title,
+        name,
         description,
-        episodes,
-        releaseYear,
-        studio,
-        genres,
-        rating,
-        imageUrl,
+        age,
+        power,
+        anime
       } = req.body;
 
-      // Atualizar o anime
-      const UpdatePersonagem = await AnimeModel.update(
+      // Atualizar o personagens
+      const updatedPersonagem = await PersonagemModel.update(
         id,
-        title,
+        name,
         description,
-        episodes,
-        releaseYear,
-        studio,
-        genres,
-        rating,
-        imageUrl
+        age,
+        power,
+        anime
       );
 
-      if (!UpdatePersonagem) {
-        return res.status(404).json({ error: "Anime não encontrado" });
+      if (!updatedPersonagem) {
+        return res.status(404).json({ error: "Personagem não encontrado" });
       }
 
-      res.json(UpdatePersonagem);
+      res.json(updatedPersonagem);
     } catch (error) {
-      console.error("Erro ao atualizar anime:", error);
-      res.status(500).json({ error: "Erro ao atualizar anime" });
+      console.error("Erro ao atualizar personagens:", error);
+      res.status(500).json({ error: "Erro ao atualizar personagens" });
     }
   }
 
   // DELETE /api/personagens/:id
-  async deleteAnime(req, res) {
+  async deletePersonagem(req, res) {
     try {
       const { id } = req.params;
 
-      // Remover o anime
-      const result = await AnimeModel.delete(id);
+      // Remover o personagens
+      const result = await PersonagemModel.delete(id);
 
       if (!result) {
-        return res.status(404).json({ error: "Anime não encontrado" });
+        return res.status(404).json({ error: "Personagem não encontrado" });
       }
 
       res.status(204).end(); // Resposta sem conteúdo
     } catch (error) {
-      console.error("Erro ao remover anime:", error);
-      res.status(500).json({ error: "Erro ao remover anime" });
+      console.error("Erro ao remover personagens:", error);
+      res.status(500).json({ error: "Erro ao remover personagens" });
     }
   }
 }
 
-export default new AnimeController();
+export default new PersonagemController();
